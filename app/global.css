@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+    --modal-shadow: rgba(0, 0, 0, 0.1);
+}
+
+
+
+@layer utilities{
+    .frame {
+        @apply max-w-[1128px] px-[30px] xl:px-0 mx-auto;
+    }
+    /* shadows */
+    .modal_shadow {
+        box-shadow: 0px 0px 20px var(--modal-shadow);
+    }
+
+}
