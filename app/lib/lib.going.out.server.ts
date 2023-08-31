@@ -1,7 +1,7 @@
 import z from "zod";
 
-export { SEO_Schema } from "./schemas/seo";
-export type { SEO } from "./schemas/seo";
+export { SEO_Schema } from "./blocks/seo";
+export type { SEO } from "./blocks/seo";
 
 const CategorySchema = z.object({
     id: z.string(),

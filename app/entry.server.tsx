@@ -11,11 +11,9 @@ import { Response } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import isbot from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
+import { create_storyblock_api } from "app/lib/st.api.server";
+import { env } from "./environment.server";
 
-export interface Env {
-    ST_ACCESS_TOKEN: string;
-    DOMAIN: string;
-}
 const ABORT_DELAY = 5_000;
 
 export default function handleRequest(
@@ -87,6 +85,7 @@ function handleBrowserRequest(
 ) {
     return new Promise((resolve, reject) => {
         let shellRendered = false;
+
         const { pipe, abort } = renderToPipeableStream(
             <RemixServer
                 context={remixContext}
