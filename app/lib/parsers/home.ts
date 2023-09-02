@@ -62,7 +62,7 @@ export const home_page_parser = z
             seo: {
                 title: raw.data.HomeItems.items[0].content.seo[0].tile,
                 description: raw.data.HomeItems.items[0].content.seo[0].description,
-                og_image: raw.data.HomeItems.items[0].content.seo[0].og_image,
+                og_image: `https:${raw.data.HomeItems.items[0].content.seo[0].og_image}`, // came as //storyblock... need to fix
             },
             intro: {
                 heading: raw.data.HomeItems.items[0].content.intro[0].heading,

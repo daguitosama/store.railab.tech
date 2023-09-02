@@ -60,7 +60,7 @@ export async function loader({ request }: LoaderArgs) {
     }
     return json<LoaderData>({
         home_page: home_op.ok,
-        meta: seo_meta_tags(home_page_static.seo, "/"),
+        meta: seo_meta_tags(home_op.ok.seo, "/"),
     });
 }
 
