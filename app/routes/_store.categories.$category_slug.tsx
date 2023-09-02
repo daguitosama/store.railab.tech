@@ -34,11 +34,16 @@ export const meta: V2_MetaFunction = ({ data }: { data: LoaderData }) => {
 export default function Index() {
     const loaderData = useLoaderData<LoaderData>();
     return (
-        <div className='frame'>
-            <Heading>
-                <span>{loaderData.category_page.name}</span>
-            </Heading>
-            <ProductGrid products={loaderData.category_page.products} />
+        <div>
+            {/* <div className='bg-azulito text-white flex items-center justify-center py-[12px]'>
+                <p className='font-bold md:text-xl'>Railab Store</p>
+            </div> */}
+            <div className='frame'>
+                <Heading>
+                    <span>{loaderData.category_page.name}</span>
+                </Heading>
+                <ProductGrid products={loaderData.category_page.products} />
+            </div>
         </div>
     );
 }
