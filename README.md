@@ -1,6 +1,8 @@
 # store.railab.tech
 A website for my friend's Mac repair shop. If you are in Habana, and need get a Mac fix, this is the place 😎
 
+A Remix app, deployed on bare metal Linux, behind a Caddy server. 
+
 
 
 ## TODOS
