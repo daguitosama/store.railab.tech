@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { HomePage } from "../blocks/home";
+import { seo_parser } from "./seo";
 
 export const home_page_parser = z
     .object({
@@ -8,13 +9,7 @@ export const home_page_parser = z
                 items: z.array(
                     z.object({
                         content: z.object({
-                            seo: z.array(
-                                z.object({
-                                    tile: z.string(),
-                                    description: z.string(),
-                                    og_image: z.string(),
-                                })
-                            ),
+                            seo: seo_parser,
                             intro: z.array(
                                 z.object({
                                     heading: z.string(),
@@ -59,11 +54,7 @@ export const home_page_parser = z
     })
     .transform(function (raw): HomePage {
         return {
-            seo: {
-                title: raw.data.HomeItems.items[0].content.seo[0].tile,
-                description: raw.data.HomeItems.items[0].content.seo[0].description,
-                og_image: `https:${raw.data.HomeItems.items[0].content.seo[0].og_image}`, // came as //storyblock... need to fix
-            },
+            seo: raw.data.HomeItems.items[0].content.seo,
             intro: {
                 heading: raw.data.HomeItems.items[0].content.intro[0].heading,
                 sub_heading: raw.data.HomeItems.items[0].content.intro[0].sub_heading,
@@ -76,7 +67,7 @@ export const home_page_parser = z
                         categories: category_section.categories.map((category_section) => {
                             return {
                                 id: category_section.uuid,
-                                slug: `/category/${category_section.slug}`,
+                                slug: `/categories/${category_section.slug}`,
                                 title: category_section.name,
                                 image: {
                                     url: `https:${category_section.content.image}`,

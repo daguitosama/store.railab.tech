@@ -1,7 +1,6 @@
 import type { LoaderArgs, V2_MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
-import { CategoryGrid } from "~/components/CategoryGrid";
 import { Subheading } from "~/components/Subheading";
 import { env } from "~/environment.server";
 import { HomeCategory, HomePage } from "~/lib/blocks/home";
@@ -14,45 +13,6 @@ type LoaderData = {
 };
 
 export async function loader({ request }: LoaderArgs) {
-    const category_sections = [
-        {
-            id: "1",
-            title: "Componentes en stock",
-            categories: [
-                {
-                    id: "1",
-                    title: "Motherboards",
-                    slug: "motherboards",
-                    image: "/img/proto/alexandre-debieve-FO7JIlwjOtU-unsplash.webp",
-                },
-                {
-                    id: "2",
-                    title: "Batteries",
-                    slug: "batteries",
-                    image: "/img/proto/mika-baumeister-USW-dIQpcAk-unsplash.webp",
-                },
-                {
-                    id: "3",
-                    title: "Displays",
-                    slug: "displays",
-                    image: "/img/proto/daniel-korpai-HyTwtsk8XqA-unsplash.webp",
-                },
-            ],
-        },
-    ];
-    const home_page_static: LoaderData["home_page"] = {
-        seo: {
-            title: "Railab Store",
-            description:
-                "Resuelve tu pieza socio! Partes y accesorios para la Mac en la Habana. Seriedad y Calidad garantizadas.",
-            og_image: "https://foo.bar/img",
-        },
-        intro: {
-            heading: "Piezas y componentes para la Mac en la Habana",
-            sub_heading: "Seriedad y calidad garantizadas!",
-        },
-        category_sections: [],
-    };
     const content = create_storyblock_api({ access_token: env().ST_ACCESS_TOKEN });
     const home_op = await content.get_home_page();
     if (home_op.err) {
@@ -65,7 +25,6 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export const meta: V2_MetaFunction = ({ data }: { data: LoaderData }) => {
-    console.log("Meta fn run");
     return data.meta;
 };
 

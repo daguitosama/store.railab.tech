@@ -25,3 +25,5 @@ export function seo_meta_tags(seo: SEO, relative_route: string) {
 }
 
 export const gql = String.raw;
+
+export { renderRichText } from "@storyblok/js";
