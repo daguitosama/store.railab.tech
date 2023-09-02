@@ -93,7 +93,7 @@ function Intro({ block }: { block: HomePage["intro"] }) {
 
 function Categories({ block }: { block: HomePage["category_sections"] }) {
     return (
-        <div>
+        <div className=' max-w-screen-lg mx-auto px-[25px]'>
             {block.map((cts) => {
                 return (
                     <div key={cts.id}>

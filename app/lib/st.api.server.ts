@@ -4,6 +4,16 @@ import { home_page_parser } from "./parsers/home";
 
 class HTTPError extends Error {}
 
+type GetHomeResult =
+    | {
+          ok: HomePage;
+          err: null;
+      }
+    | {
+          ok: null;
+          err: Error;
+      };
+
 export function create_storyblock_api({ access_token }: { access_token: string }) {
     var api_url = `https://gapi-us.storyblok.com/v1/api`;
     const headers = new Headers();
@@ -13,6 +23,8 @@ export function create_storyblock_api({ access_token }: { access_token: string }
     return {
         async get_home_page(): Promise<GetHomeResult> {
             const query = gql`
+                # nested data ref
+                # https://www.storyblok.com/cl/resolve-relations-in-nested-graphql-query
                 {
                     HomeItems(resolve_relations: "categories_section.categories") {
                         total
@@ -51,14 +63,3 @@ export function create_storyblock_api({ access_token }: { access_token: string }
         },
     };
 }
-
-// types
-type GetHomeResult =
-    | {
-          ok: HomePage;
-          err: null;
-      }
-    | {
-          ok: null;
-          err: Error;
-      };

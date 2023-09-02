@@ -12,7 +12,7 @@ export const Subheading = ({ children, ...props }: SubheadingProps) => {
     return (
         <h2
             {...props}
-            className='text-4xl font-bold py-[54px] text-center'
+            className='text-2xl md:text-3xl font-bold py-[54px] text-center'
         >
             {children}
         </h2>
