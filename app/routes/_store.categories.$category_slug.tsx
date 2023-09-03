@@ -35,9 +35,6 @@ export default function Index() {
     const loaderData = useLoaderData<LoaderData>();
     return (
         <div>
-            {/* <div className='bg-azulito text-white flex items-center justify-center py-[12px]'>
-                <p className='font-bold md:text-xl'>Railab Store</p>
-            </div> */}
             <div className='frame'>
                 <Heading>
                     <span>{loaderData.category_page.name}</span>
