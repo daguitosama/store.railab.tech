@@ -3,6 +3,7 @@ import { HomePage } from "./blocks/home";
 import { gql } from "./lib.server";
 import { category_page_parser } from "./parsers/category.page";
 import { home_page_parser } from "./parsers/home";
+import { Product, product_page_query_parser, product_parser } from "./parsers/product";
 
 class HTTPError extends Error {}
 
@@ -25,6 +26,15 @@ type GetCategoryPageResult =
           err: Error;
       };
 
+type GetProductResult =
+    | {
+          ok: Product;
+          err: null;
+      }
+    | {
+          ok: null;
+          err: Error;
+      };
 export function create_storyblock_api({ access_token }: { access_token: string }) {
     var api_url = `https://gapi-us.storyblok.com/v1/api`;
     const headers = new Headers();
@@ -106,11 +116,51 @@ export function create_storyblock_api({ access_token }: { access_token: string }
                 });
 
                 if (!res.ok) {
-                    throw new HTTPError("Get Home fail with status: " + res.status);
+                    throw new HTTPError("Get Category fail with status: " + res.status);
                 }
                 var data = await res.json();
                 // console.log(JSON.stringify(data, null, 2));
                 return { ok: category_page_parser.parse(data), err: null };
+            } catch (error) {
+                if (error instanceof Error) {
+                    return { ok: null, err: error };
+                }
+            }
+
+            return { ok: null, err: new Error("Unknown error") };
+        },
+        async get_product(slug: string): Promise<GetProductResult> {
+            const product_id = `"products/${slug}"`;
+            const query = gql`
+                {
+                    ProductItem(id: ${product_id}) {
+                        id
+                        name
+                        slug
+                        content {
+                            seo
+                            image
+                            price
+                            description
+                        }
+                    }
+                }
+            `;
+
+            // console.log(JSON.stringify({ query }, null, 2));
+            try {
+                var res = await fetch(api_url, {
+                    method: "POST",
+                    headers,
+                    body: JSON.stringify({ query, variables: {} }),
+                });
+
+                if (!res.ok) {
+                    throw new HTTPError("Get Product fail with status: " + res.status);
+                }
+                var data = await res.json();
+                // console.log(JSON.stringify(data, null, 2));
+                return { ok: product_page_query_parser.parse(data), err: null };
             } catch (error) {
                 if (error instanceof Error) {
                     return { ok: null, err: error };

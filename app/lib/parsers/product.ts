@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { seo_parser } from "./seo";
-import { renderRichText } from "@storyblok/js";
-
+import { RichtextResolver } from "storyblok-js-client";
+const rich_text_renderer = new RichtextResolver();
 export const product_parser = z
     .object({
         id: z.number(),
@@ -15,6 +15,8 @@ export const product_parser = z
         }),
     })
     .transform((raw) => {
+        console.log("Product parser transform, rendering description as: ");
+
         return {
             id: raw.id,
             name: raw.name,
@@ -23,7 +25,19 @@ export const product_parser = z
                 seo: raw.content.seo,
                 image: raw.content.image,
                 price: raw.content.price,
-                description: renderRichText(raw.content.description),
+                description: rich_text_renderer.render(raw.content.description),
             },
         };
+    });
+
+export type Product = z.infer<typeof product_parser>;
+
+export const product_page_query_parser = z
+    .object({
+        data: z.object({
+            ProductItem: product_parser,
+        }),
+    })
+    .transform((raw): Product => {
+        return raw.data.ProductItem;
     });

@@ -2,8 +2,9 @@ import { json, type LoaderArgs, type V2_MetaFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { Heading } from "~/components/Heading";
 import { env } from "~/environment.server";
-import { CategoryPage, Product } from "~/lib/blocks/category.page";
+import { CategoryPage } from "~/lib/blocks/category.page";
 import { seo_meta_tags } from "~/lib/lib.server";
+import { Product } from "~/lib/parsers/product";
 import { create_storyblock_api } from "~/lib/st.api.server";
 
 type LoaderData = {
