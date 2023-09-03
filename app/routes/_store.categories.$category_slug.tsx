@@ -77,7 +77,7 @@ export const ProductGrid = ({ products, ...props }: ProductGridProps) => {
 
 function ProductCard({ product, ...props }: { product: Product }) {
     return (
-        <article className='mx-auto w-full  relative group '>
+        <article className='mx-auto w-full  relative group hover:rotate-2 transition-all duration-300'>
             <div className='relative z-20 grid grid-cols-1 gap-[20px] '>
                 <div className='h-[200px] relative rounded-[12px] overflow-hidden hover:scale-105 transform-gpu duration-300 group'>
                     <img
@@ -104,7 +104,7 @@ function ProductCard({ product, ...props }: { product: Product }) {
             >
                 <span className='sr-only'>{product.name}</span>{" "}
             </Link>
-            <div className='group-hover:opacity-100 opacity-0 bg-white group-hover:scale-110 rounded-[12px] duration-300 absolute inset-0 w-full h-full z-10'></div>
+            <div className='group-hover:opacity-100 ring-black/10 ring-1 opacity-0 group-hover:shadow-2xl bg-white group-hover:scale-110 rounded-[24px] duration-300 absolute inset-0 w-full h-full z-10'></div>
         </article>
     );
 }

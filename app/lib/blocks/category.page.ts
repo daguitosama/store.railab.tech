@@ -1,8 +1,8 @@
 import { SEO } from "./seo";
-import { ProductOfCategoryView } from "../parsers/product";
+import { Product } from "../parsers/product";
 
 export type CategoryPage = {
     seo: SEO;
     name: string;
-    products: ProductOfCategoryView[];
+    products: Product[];
 };
