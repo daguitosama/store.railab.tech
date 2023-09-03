@@ -1,38 +1,44 @@
 import { json, type LoaderArgs, type V2_MetaFunction } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
-import { NavigationLink, Navigation } from "~/components/Navigation";
+import { Navigation } from "~/components/Navigation";
+import { env } from "~/environment.server";
+import { MenuLink } from "~/lib/parsers/links";
+import { create_storyblock_api } from "~/lib/st.api.server";
 
 type LoaderData = {
-    links: NavigationLink[];
+    links: MenuLink[];
 };
 
 export async function loader({ request }: LoaderArgs) {
-    const links: NavigationLink[] = [
-        {
-            id: "0",
-            label: "Home",
-            slug: "/",
-        },
-        {
-            id: "1",
-            label: "Motherboards",
-            slug: "motherboards",
-        },
-        {
-            id: "2",
-            label: "Batteries",
-            slug: "batteries",
-        },
-        {
-            id: "3",
-            label: "Displays",
-            slug: "displays",
-        },
-    ];
-
-    // console.log(`Node Env: `, process.env.NODE_ENV);
+    // const _links: NavigationLink[] = [
+    //     {
+    //         id: "0",
+    //         label: "Home",
+    //         slug: "/",
+    //     },
+    //     {
+    //         id: "1",
+    //         label: "Motherboards",
+    //         slug: "motherboards",
+    //     },
+    //     {
+    //         id: "2",
+    //         label: "Batteries",
+    //         slug: "batteries",
+    //     },
+    //     {
+    //         id: "3",
+    //         label: "Displays",
+    //         slug: "displays",
+    //     },
+    // ];
+    const content = create_storyblock_api({ access_token: env().ST_ACCESS_TOKEN });
+    const menu_links_result = await content.get_menu_links();
+    if (menu_links_result.err) {
+        throw menu_links_result.err;
+    }
     return json<LoaderData>({
-        links,
+        links: [{ id: "home_menu_link", label: "Home", route: "/" }].concat(menu_links_result.ok),
     });
 }
 

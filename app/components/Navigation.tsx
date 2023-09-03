@@ -2,18 +2,13 @@ import { Link, NavLink } from "@remix-run/react";
 import clsx from "clsx";
 import { useState } from "react";
 import { ModalDown } from "./ModalDown";
-
-export type NavigationLink = {
-    id: string;
-    label: string;
-    slug: string;
-};
+import { MenuLink } from "~/lib/parsers/links";
 
 interface NavigationProps {
     /**
      * Property description
      */
-    links: NavigationLink[];
+    links: MenuLink[];
 }
 
 /**
@@ -49,7 +44,7 @@ export const Navigation = ({ links, ...props }: NavigationProps) => {
                                 {links.map((link) => {
                                     return (
                                         <li
-                                            key={link.slug}
+                                            key={link.id}
                                             className=''
                                         >
                                             <NavMenuLink
@@ -106,10 +101,10 @@ function IconMenu() {
     );
 }
 
-function NavMenuLink({ link, on_close, ...props }: { link: NavigationLink; on_close: () => void }) {
+function NavMenuLink({ link, on_close, ...props }: { link: MenuLink; on_close: () => void }) {
     return (
         <NavLink
-            to={link.slug}
+            to={link.route}
             onClick={on_close}
             className={({ isActive, isPending }) => {
                 const baseStyles = " block w-full h-full p-2 rounded-md";

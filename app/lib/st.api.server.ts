@@ -3,6 +3,7 @@ import { HomePage } from "./blocks/home";
 import { gql } from "./lib.server";
 import { category_page_parser } from "./parsers/category.page";
 import { home_page_parser } from "./parsers/home";
+import { MenuLink, menu_links_parser } from "./parsers/links";
 import { Product, product_page_query_parser, product_parser } from "./parsers/product";
 
 class HTTPError extends Error {}
@@ -29,6 +30,16 @@ type GetCategoryPageResult =
 type GetProductResult =
     | {
           ok: Product;
+          err: null;
+      }
+    | {
+          ok: null;
+          err: Error;
+      };
+
+type GetMenuLinksResult =
+    | {
+          ok: MenuLink[];
           err: null;
       }
     | {
@@ -161,6 +172,42 @@ export function create_storyblock_api({ access_token }: { access_token: string }
                 var data = await res.json();
                 // console.log(JSON.stringify(data, null, 2));
                 return { ok: product_page_query_parser.parse(data), err: null };
+            } catch (error) {
+                if (error instanceof Error) {
+                    return { ok: null, err: error };
+                }
+            }
+
+            return { ok: null, err: new Error("Unknown error") };
+        },
+
+        async get_menu_links(): Promise<GetMenuLinksResult> {
+            const query = gql`
+                {
+                    CategoryItems {
+                        items {
+                            name
+                            uuid
+                            slug
+                        }
+                    }
+                }
+            `;
+
+            // console.log(JSON.stringify({ query }, null, 2));
+            try {
+                var res = await fetch(api_url, {
+                    method: "POST",
+                    headers,
+                    body: JSON.stringify({ query, variables: {} }),
+                });
+
+                if (!res.ok) {
+                    throw new HTTPError("Get Menu Links fail with status: " + res.status);
+                }
+                var data = await res.json();
+                // console.log(JSON.stringify(data, null, 2));
+                return { ok: menu_links_parser.parse(data), err: null };
             } catch (error) {
                 if (error instanceof Error) {
                     return { ok: null, err: error };
